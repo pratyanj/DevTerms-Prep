@@ -1,0 +1,86 @@
+{
+  "entities": {
+    "UserStudyProgress": {
+      "title": "UserStudyProgress",
+      "description": "Tracks per-user daily study streak, last activity date, mastered term IDs, bookmarked term IDs, and quiz high score.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the user who owns this progress record.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of the authenticated learner.",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "streakCount": {
+          "type": "integer",
+          "description": "Current consecutive days the user has studied or interacted with the app."
+        },
+        "longestStreak": {
+          "type": "integer",
+          "description": "Highest consecutive daily study streak achieved by this user."
+        },
+        "lastActiveDate": {
+          "type": "string",
+          "description": "Local calendar date of the user's last study interaction in YYYY-MM-DD format.",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "quizHighScore": {
+          "type": "integer",
+          "description": "Highest percentage score (0-100) achieved on the interview quiz."
+        },
+        "quizAttempts": {
+          "type": "integer",
+          "description": "Total number of completed quiz attempts."
+        },
+        "masteredIds": {
+          "type": "array",
+          "description": "Bounded list of mastered term IDs (maximum 100 items)."
+        },
+        "bookmarkedIds": {
+          "type": "array",
+          "description": "Bounded list of bookmarked term IDs (maximum 100 items)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the user study profile was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the user study profile was last updated."
+        }
+      },
+      "required": [
+        "ownerId",
+        "displayName",
+        "streakCount",
+        "longestStreak",
+        "lastActiveDate",
+        "quizHighScore",
+        "quizAttempts",
+        "masteredIds",
+        "bookmarkedIds",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/userStudyProgress/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserStudyProgress"
+      },
+      "description": "Stores isolated per-user study streak, last activity date, and mastery state keyed by the user's Firebase Auth UID."
+    }
+  }
+}
